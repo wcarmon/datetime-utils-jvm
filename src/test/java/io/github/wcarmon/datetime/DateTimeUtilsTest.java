@@ -13,7 +13,6 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.time.LocalDate;
 import java.util.function.Predicate;
-
 import org.junit.jupiter.api.Test;
 
 class DateTimeUtilsTest {
@@ -24,9 +23,8 @@ class DateTimeUtilsTest {
     @Test
     void testPreviousBusinessDay() {
 
-        final Predicate<LocalDate> holidayPredicate = dt ->
-                LocalDate.of(2024, 2, 19).equals(dt)
-                        || LocalDate.of(2024, 2, 16).equals(dt);
+        final Predicate<LocalDate> holidayPredicate =
+                dt -> LocalDate.of(2024, 2, 19).equals(dt) || LocalDate.of(2024, 2, 16).equals(dt);
 
         final LocalDate start = LocalDate.of(2024, 2, 20);
         assumeTrue(TUESDAY == start.getDayOfWeek());
