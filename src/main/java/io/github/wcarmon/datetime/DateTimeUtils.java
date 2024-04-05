@@ -16,19 +16,27 @@ public final class DateTimeUtils {
     private DateTimeUtils() {}
 
     /**
+     * Derive the instant for the start of the date within the passed timezone.
+     *
+     * @param ts timestamp at or after the return value
+     * @param zoneId timezone used to determine when the day starts
      * @return latest start-of-day (midnight) before ts, in the passed timezone
      */
     // TODO: add tests
     public static Instant getStartOfDay(Instant ts, ZoneId zoneId) {
+        requireNonNull(ts, "ts is required and null.");
+        requireNonNull(zoneId, "zoneId is required and null.");
 
         return ZonedDateTime.ofInstant(ts, zoneId).truncatedTo(ChronoUnit.DAYS).toInstant();
     }
 
     /**
-     * @param startDate
-     * @param n
-     * @param holidayPredicate
-     * @return
+     * Derive a date that is n business days in the past. (a weekday and not a holiday).
+     *
+     * @param startDate current or starting point for calculation
+     * @param n how many business days to go back
+     * @param holidayPredicate determines which dates are holidays
+     * @return a business date (a weekday and not a holiday).
      */
     // TODO: add tests
     public static LocalDate nBusinessDaysAgo(
@@ -51,6 +59,13 @@ public final class DateTimeUtils {
         return current;
     }
 
+    /**
+     * Derive a date that is n weekdays in the past. Does not consider holidays.
+     *
+     * @param startDate current or starting point for calculation
+     * @param n how many week days to go back
+     * @return a weekday in the past
+     */
     // TODO: add tests
     public static LocalDate nWeekDaysAgo(LocalDate startDate, int n) {
         requireNonNull(startDate, "startDate is required and null.");
@@ -71,8 +86,11 @@ public final class DateTimeUtils {
     }
 
     /**
-     * @param startDate
-     * @param holidayPredicate allows control over holidays
+     * Derive the previous business day (a weekday and not a holiday). Accepts configurable holidays
+     * via predicate argument.
+     *
+     * @param startDate current or starting point for calculation
+     * @param holidayPredicate determines which dates are holidays
      * @return a non-holiday, weekday in the past
      */
     public static LocalDate previousBusinessDay(
@@ -93,7 +111,9 @@ public final class DateTimeUtils {
     }
 
     /**
-     * @param startDate
+     * Derive the previous weekday. Does not consider holidays.
+     *
+     * @param startDate current or starting point for calculation
      * @return previous weekday
      */
     public static LocalDate previousWeekDay(LocalDate startDate) {
